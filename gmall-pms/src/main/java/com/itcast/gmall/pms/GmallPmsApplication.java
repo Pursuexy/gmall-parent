@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @EnableDubbo
-@MapperScan("com.itcast.gmall.pms.mapper")
+@MapperScan(basePackages = "com.itcast.gmall.pms.mapper")
 @SpringBootApplication
 public class GmallPmsApplication {
 
