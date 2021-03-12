@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -69,20 +70,19 @@ public class UmsAdminController {
         Admin admin = null;
 
         //TODO 完成注册功能
-//        int errorCount = result.getErrorCount();
-//        if(errorCount>0){
-//            List<FieldError> fieldErrors = result.getFieldErrors();
-//            fieldErrors.forEach((fieldError)->{
-//                String field = fieldError.getField();
-//                log.debug("属性：{}，传来的值是：{}，校验出错。出错的提示消息：{}",
-//                        field,fieldError.getRejectedValue(),fieldError.getDefaultMessage());
-//            });
-//
-//
-//            return new CommonResult().validateFailed(result);
-//        }else {
-//
-//        }
+       // int errorCount = result.getErrorCount();
+       // if(errorCount>0){
+       //     List<FieldError> fieldErrors = result.getFieldErrors();
+       //     fieldErrors.forEach((fieldError)->{
+       //         String field = fieldError.getField();
+       //         log.debug("属性：{}，传来的值是：{}，校验出错。出错的提示消息：{}",
+       //                 field,fieldError.getRejectedValue(),fieldError.getDefaultMessage());
+       //     });
+       //     return new CommonResult().validateFailed(result);
+       // }else {
+       //
+       //
+       // }
         log.debug("需要注册的用户详情：{}",umsAdminParam);
         int i = 10/0;
         return new CommonResult().success(admin);

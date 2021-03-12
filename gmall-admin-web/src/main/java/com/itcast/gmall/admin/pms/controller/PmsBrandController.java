@@ -68,9 +68,7 @@ public class PmsBrandController {
                             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
         CommonResult commonResult = new CommonResult();
-
         PageInfoVo vo = brandService.brandPageInfo(keyword,pageNum,pageSize);
-
         return commonResult.success(vo);
     }
 
@@ -101,7 +99,6 @@ public class PmsBrandController {
         CommonResult commonResult = new CommonResult();
         //TODO 批量更新显示状态
 
-
         return commonResult;
     }
 
@@ -111,7 +108,6 @@ public class PmsBrandController {
                                       @RequestParam("factoryStatus") Integer factoryStatus) {
         CommonResult commonResult = new CommonResult();
         //TODO 批量更新厂家制造商状态
-
 
         return commonResult;
     }

@@ -1,8 +1,6 @@
 package com.itcast.gmall.admin.ums.vo;
 
 import io.swagger.annotations.ApiModelProperty;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;

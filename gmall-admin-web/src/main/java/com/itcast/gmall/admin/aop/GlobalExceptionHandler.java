@@ -1,6 +1,5 @@
 package com.itcast.gmall.admin.aop;
 
-
 import com.itcast.gmall.admin.utils.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * 统一处理所有异常，给前端返回500的json
  *
  * 当我们编写环绕通知的时候，目标方法出现的异常一定要再次跑出去
+ * @RestControllerAdvice=@ControllerAdvice+@Responsebody
  */
 @Slf4j
 @RestControllerAdvice

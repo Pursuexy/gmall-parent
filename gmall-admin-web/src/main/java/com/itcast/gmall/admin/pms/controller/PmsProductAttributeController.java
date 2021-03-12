@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * 商品属性管理Controller
  */
+@CrossOrigin
 @RestController
 @Api(tags = "PmsProductAttributeController", description = "商品属性管理")
 @RequestMapping("/productAttribute")
