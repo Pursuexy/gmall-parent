@@ -3,15 +3,13 @@ package com.itcast.gmall.admin.pms.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itcast.gmall.admin.utils.CommonResult;
 import com.itcast.gmall.pms.service.ProductAttributeCategoryService;
+import com.itcast.gmall.utils.PageInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 商品属性分类Controller
- * Created by atguigu 4/26.
  */
 @CrossOrigin
 @RestController
@@ -53,9 +51,11 @@ public class PmsProductAttributeCategoryController {
     @ApiOperation("分页获取所有商品属性分类")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public Object getList(@RequestParam(defaultValue = "5") Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNum) {
-        //TODO 分页获取所有商品属性分类
-        return new CommonResult().success(null);
+    public Object getList(@RequestParam(defaultValue = "5") Integer pageSize,
+                          @RequestParam(defaultValue = "1") Integer pageNum) {
+        //分页获取所有商品属性分类
+        PageInfoVo pageInfoVo=productAttributeCategoryService.productAttributeCategoryServicePageInfo(pageSize,pageNum);
+        return new CommonResult().success(pageInfoVo);
     }
 
     @ApiOperation("获取所有商品属性分类及其下属性【难度较高】")
