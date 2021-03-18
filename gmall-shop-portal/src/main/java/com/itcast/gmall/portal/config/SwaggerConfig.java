@@ -1,4 +1,4 @@
-package com.itcast.gmall.admin.config;
+package com.itcast.gmall.portal.config;
 
 import io.swagger.annotations.Api;
 import org.springframework.context.annotation.Bean;
@@ -15,13 +15,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
-	@Bean("后台用户模块")
+	@Bean("检索模块")
 	public Docket createRestApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
-				.groupName("后台用户模块")
+				.groupName("检索模块")
 				.select()
 				.apis(RequestHandlerSelectors.withMethodAnnotation(Api.class))
-				.paths(PathSelectors.regex("/admin.*"))
+				.paths(PathSelectors.regex("/search.*"))
 				.build()
 				.apiInfo(apiInfo())
 				.enable(true);
@@ -29,10 +29,9 @@ public class SwaggerConfig {
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("谷粒商城-后台管理平台接口文档")
-				.description("提供后台管理平台的文档")
+				.title("谷粒商城-检索模块平台接口文档")
+				.description("提供检索模块的文档")
 				.version("1.0")
 				.build();
 	}
-
 }
