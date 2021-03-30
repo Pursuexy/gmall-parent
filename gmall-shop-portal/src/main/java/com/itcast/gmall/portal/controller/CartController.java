@@ -29,9 +29,44 @@ public class CartController {
 	 */
 	@PostMapping("/add")
 	public CommonResult addToCart(@RequestParam("skuId") Long skuId,
+	                              @RequestParam(value = "num",defaultValue = "1") Integer num,
 	                              @RequestParam(value = "accessToken",required = false) String accessToken,
 	                              @RequestParam(value = "cartKey",required = false) String cartKey) throws ExecutionException, InterruptedException {
-		CartResponse cartResponse=cartService.addToCart(skuId, accessToken, cartKey);
+		CartResponse cartResponse=cartService.addToCart(skuId, num,accessToken, cartKey);
+		return new CommonResult().success(cartResponse);
+	}
+
+	/**
+	 * 修改购物项数量
+	 * @param skuId
+	 * @param num
+	 * @param accessToken
+	 * @param cartKey
+	 * @return
+	 * @throws ExecutionException
+	 * @throws InterruptedException
+	 */
+	@PostMapping("/add")
+	public CommonResult updateCartItemNum(@RequestParam("skuId") Long skuId,
+	                              @RequestParam(value = "num",defaultValue = "1") Integer num,
+	                              @RequestParam(value = "accessToken",required = false) String accessToken,
+	                              @RequestParam(value = "cartKey",required = false) String cartKey) throws ExecutionException, InterruptedException {
+		CartResponse cartResponse=cartService.updateCartItemNum(skuId, num,accessToken, cartKey);
+		return new CommonResult().success(cartResponse);
+	}
+
+	/**
+	 * 查看购物车清单
+	 * @param accessToken
+	 * @param cartKey
+	 * @return
+	 * @throws ExecutionException
+	 * @throws InterruptedException
+	 */
+	@PostMapping("/cartList")
+	public CommonResult getCartList(@RequestParam(value = "accessToken",required = false) String accessToken,
+	                                @RequestParam(value = "cartKey",required = false) String cartKey) throws ExecutionException, InterruptedException {
+		CartResponse cartResponse=cartService.getCartList(accessToken, cartKey);
 		return new CommonResult().success(cartResponse);
 	}
 }

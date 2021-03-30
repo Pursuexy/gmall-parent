@@ -16,5 +16,5 @@ public class CartResponse implements Serializable {
 
 	private CartItem cartItem;//购物项信息
 
-	private String cartKey;
+	private String cartKey;//离线购物车的数据结构中的key
 }
