@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.itcast.gmall</groupId>
-    <artifactId>gmall-oms</artifactId>
+    <artifactId>gmall-cart</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gmall-oms</name>
-    <description>订单管理系统</description>
+    <name>gmall-cart</name>
+    <description>购物车有关服务</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -31,6 +31,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.10.5</version>
         </dependency>
     </dependencies>
 

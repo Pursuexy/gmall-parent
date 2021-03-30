@@ -13,4 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface MemberService extends IService<Member> {
 
+	/**
+	 * 登录验证，并实现多端口单点登录
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	Member login(String username, String password);
 }
