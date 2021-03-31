@@ -40,7 +40,7 @@ public class CartItem implements Serializable {
 	private Integer count;//购买商品数量
 
 	@Getter
-	private Boolean checkStatus;//当前购物项的选中状态
+	private boolean checkStatus=true;//当前购物项的选中状态
 
 	private BigDecimal totalPrice;//当前购物项商品总价格
 

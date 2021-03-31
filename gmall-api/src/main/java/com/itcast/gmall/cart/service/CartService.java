@@ -35,4 +35,31 @@ public interface CartService {
 	 * @return
 	 */
 	CartResponse getCartList(String accessToken, String cartKey);
+
+	/**
+	 * 根据skuId删除购物项
+	 * @param skuId
+	 * @param accessToken
+	 * @param cartKey
+	 * @return
+	 */
+	CartResponse deleteCartItem(Long skuId, String accessToken, String cartKey);
+
+	/**
+	 * 根据skuId清空购物项
+	 * @param accessToken
+	 * @param cartKey
+	 * @return
+	 */
+	CartResponse clearCartItem(String accessToken, String cartKey);
+
+	/**
+	 * 根据skuIds操作购物项
+	 * @param skuIds
+	 * @param options
+	 * @param accessToken
+	 * @param cartKey
+	 * @return
+	 */
+	CartResponse checkCartItems(String skuIds, Integer options, String accessToken, String cartKey);
 }
