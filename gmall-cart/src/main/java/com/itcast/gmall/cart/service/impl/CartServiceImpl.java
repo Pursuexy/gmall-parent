@@ -6,10 +6,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.itcast.gmall.cart.component.MemberComponent;
 import com.itcast.gmall.cart.entity.Cart;
-import com.itcast.gmall.cart.entity.CartConstant;
+import com.itcast.gmall.constant.CartConstant;
 import com.itcast.gmall.cart.entity.CartItem;
 import com.itcast.gmall.cart.entity.UserCartKey;
 import com.itcast.gmall.cart.service.CartService;
+import com.itcast.gmall.constant.SystemCacheConstant;
 import com.itcast.gmall.pms.entity.Product;
 import com.itcast.gmall.pms.service.ProductService;
 import com.itcast.gmall.pms.service.SkuStockService;
@@ -248,6 +249,47 @@ public class CartServiceImpl implements CartService {
 		assert cartMap != null;
 		changeCartItemStatus(cartMap, checked, skuIdsList);
 		return getCartList(accessToken, cartKey);
+	}
+
+	/**
+	 * 根据用户accessToken查询订单中的购物项列表
+	 * @param accessToken
+	 * @return
+	 */
+	@Override
+	public List<CartItem> getCartItemsForOrder(String accessToken) {
+		List<CartItem> cartItems = new ArrayList<>();
+		//根据用户的accessToken获取CartItemList列表
+		UserCartKey cartKey = memberComponent.getCartKey(null,accessToken);
+		RMap<String, String> map = RedissonClient.getMap(cartKey.getFinalCartKey());
+		String checkedCartItemJson = map.get(CartConstant.CART_KEY_CHECKED);
+		Set<Long> cartItemSet = JSON.parseObject(checkedCartItemJson, new TypeReference<Set<Long>>() {
+		});
+		cartItemSet.forEach((item)->{
+			String itemJson = map.get(item.toString());
+			CartItem cartItem = JSON.parseObject(itemJson, CartItem.class);
+			cartItems.add(cartItem);
+		});
+
+		return cartItems;
+	}
+
+	/**
+	 * 清除购物车中已下单的商品
+	 * @param accessToken
+	 * @param skuIds
+	 */
+	@Override
+	public void removeCartItem(String accessToken, List<Long> skuIds) {
+		UserCartKey cartKey = memberComponent.getCartKey(null,accessToken);
+		String finalCartKey = cartKey.getFinalCartKey();
+		RMap<String, String> map = RedissonClient.getMap(finalCartKey);
+		skuIds.forEach((skuId) -> {
+			//移除商品项
+			map.remove(skuId.toString());
+		});
+		//移除状态勾选状态保存
+		map.put(CartConstant.CART_KEY_CHECKED, JSON.toJSONString(new LinkedHashSet<Long>()));
 	}
 
 	/**

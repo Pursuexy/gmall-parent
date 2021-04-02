@@ -1,4 +1,4 @@
-package com.itcast.gmall.cart.entity;
+package com.itcast.gmall.constant;
 
 /**
  * 购物车容器常量

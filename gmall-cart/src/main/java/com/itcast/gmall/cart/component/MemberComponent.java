@@ -1,7 +1,7 @@
 package com.itcast.gmall.cart.component;
 
 import com.alibaba.fastjson.JSON;
-import com.itcast.gmall.cart.entity.CartConstant;
+import com.itcast.gmall.constant.CartConstant;
 import com.itcast.gmall.cart.entity.UserCartKey;
 import com.itcast.gmall.constant.SystemCacheConstant;
 import com.itcast.gmall.ums.entity.Member;

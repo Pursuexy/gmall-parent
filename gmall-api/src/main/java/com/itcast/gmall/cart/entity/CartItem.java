@@ -45,7 +45,6 @@ public class CartItem implements Serializable {
 	private BigDecimal totalPrice;//当前购物项商品总价格
 
 	public BigDecimal getTotalPrice() {
-		BigDecimal multiply = price.multiply(new BigDecimal(count.toString()));
-		return multiply;
+		return price.multiply(new BigDecimal(count.toString()));
 	}
 }

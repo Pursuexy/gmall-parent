@@ -3,6 +3,7 @@ package com.itcast.gmall.pms.service;
 import com.itcast.gmall.es.product.EsProduct;
 import com.itcast.gmall.pms.entity.Product;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.itcast.gmall.pms.entity.SkuStock;
 import com.itcast.gmall.utils.PageInfoVo;
 import com.itcast.gmall.vo.product.PmsProductParam;
 import com.itcast.gmall.vo.product.PmsProductQueryParam;
@@ -59,4 +60,11 @@ public interface ProductService extends IService<Product> {
 	 * @return
 	 */
 	EsProduct productSkuInfo(Long id);
+
+	/**
+	 * 查询当前skuId的商品详情信息
+	 * @param skuId
+	 * @return
+	 */
+	SkuStock getSkuInfoBySkuId(Long skuId);
 }
