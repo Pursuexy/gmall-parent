@@ -2,6 +2,7 @@ package com.itcast.gmall.oms.service;
 
 import com.itcast.gmall.oms.entity.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.itcast.gmall.order.entity.OrderConfirm;
 
 /**
  * <p>
@@ -13,4 +14,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface OrderService extends IService<Order> {
 
+	/**
+	 * 订单确认
+	 * @param id
+	 * @return
+	 */
+	OrderConfirm orderConfirm(Long id);
 }
