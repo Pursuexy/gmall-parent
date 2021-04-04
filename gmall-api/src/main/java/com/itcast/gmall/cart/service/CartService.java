@@ -1,7 +1,9 @@
 package com.itcast.gmall.cart.service;
 
+import com.itcast.gmall.cart.entity.CartItem;
 import com.itcast.gmall.vo.cart.CartResponse;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -62,4 +64,11 @@ public interface CartService {
 	 * @return
 	 */
 	CartResponse checkCartItems(String skuIds, Integer options, String accessToken, String cartKey);
+
+	/**
+	 * 根据用户id查询订单中的购物项列表
+	 * @param accessToken
+	 * @return
+	 */
+	List<CartItem> getCartItemsForOrder(String accessToken);
 }
