@@ -2,10 +2,6 @@ package com.itcast.gmall.oms.service;
 
 import com.itcast.gmall.oms.entity.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.itcast.gmall.order.entity.OrderConfirm;
-import com.itcast.gmall.order.entity.OrderCreate;
-
-import java.math.BigDecimal;
 
 /**
  * <p>
@@ -17,18 +13,4 @@ import java.math.BigDecimal;
  */
 public interface OrderService extends IService<Order> {
 
-	/**
-	 * 订单确认
-	 * @param id
-	 * @return
-	 */
-	OrderConfirm orderConfirm(Long id);
-
-	/**
-	 * 创建订单
-	 * @param totalPrice
-	 * @param addressId
-	 * @return
-	 */
-	OrderCreate createOrder(BigDecimal totalPrice, Long addressId,String orderNote);
 }

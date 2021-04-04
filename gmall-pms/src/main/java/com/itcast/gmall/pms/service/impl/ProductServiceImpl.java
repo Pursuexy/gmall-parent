@@ -65,7 +65,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 	private JestClient jestClient;
 
 	//当前线程共享数据productId
-	private ThreadLocal<Long> threadLocal = new ThreadLocal<>();
+	private ThreadLocal<Long> threadLocal=new ThreadLocal<>();
 	//ThreadLocal原理：
 	//private Map<Thread, Long> map = new HashMap<>();
 	//存入值：map.put(Thread.currentThread(), product.getId());
@@ -74,7 +74,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
 	/**
 	 * 查询商品详情
-	 *
 	 * @param id
 	 * @return
 	 */
@@ -85,7 +84,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
 	/**
 	 * 根据复杂查询条件返回分页数据
-	 *
 	 * @param productQueryParam
 	 * @return
 	 */
@@ -111,13 +109,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 			queryWrapper.eq("verify_status", productQueryParam.getVerifyStatus());
 		}
 		IPage<Product> page = productMapper.selectPage(new Page<Product>(productQueryParam.getPageNum(), productQueryParam.getPageSize()), queryWrapper);
-		PageInfoVo pageInfoVo = new PageInfoVo(page.getTotal(), page.getPages(), productQueryParam.getPageSize(), page.getRecords(), page.getCurrent());
+		PageInfoVo pageInfoVo = new PageInfoVo(page.getTotal(),page.getPages(),productQueryParam.getPageSize(),page.getRecords(),page.getCurrent());
 		return pageInfoVo;
 	}
 
 	/**
 	 * 保存商品信息
-	 *
 	 * @param productParam
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -140,7 +137,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
 	/**
 	 * 批量上下架
-	 *
 	 * @param ids
 	 * @param publishStatus
 	 */
@@ -149,7 +145,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 		//1.更改数据库的商品状态信息
 		if (publishStatus == 0) {
 			//下架
-			ids.forEach((id) -> {
+			ids.forEach((id)->{
 				//更改数据库中状态信息
 				setProductPublishStatus(publishStatus, id);
 				//删除es库中信息
@@ -157,7 +153,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 			});
 		} else {
 			//上架
-			ids.forEach((id) -> {
+			ids.forEach((id)->{
 				//更改数据库的商品状态信息
 				setProductPublishStatus(publishStatus, id);
 				//添加es库中信息
@@ -168,7 +164,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
 	/**
 	 * 查询商品信息详情
-	 *
 	 * @param id
 	 * @return
 	 */
@@ -194,7 +189,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
 	/**
 	 * 根据skuId查询商品信息
-	 *
 	 * @param id
 	 * @return
 	 */
@@ -203,7 +197,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 		EsProduct esProduct = null;
 		//按照id查出商品
 		SearchSourceBuilder builder = new SearchSourceBuilder();
-		builder.query(QueryBuilders.nestedQuery("skuProductInfos", QueryBuilders.termQuery("skuProductInfos.id", id), ScoreMode.None));
+		builder.query(QueryBuilders.nestedQuery("skuProductInfos",QueryBuilders.termQuery("skuProductInfos.id",id), ScoreMode.None));
 		Search search = new Search.Builder(builder.toString())
 				.addType(EsConstant.PRODUCT_INFO_ES_TYPE)
 				.addIndex(EsConstant.PRODUCT_ES_INDEX)
@@ -218,30 +212,19 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 		return esProduct;
 	}
 
-	/**
-	 * 查询当前skuId的商品详情信息
-	 *
-	 * @param skuId
-	 * @return
-	 */
-	@Override
-	public SkuStock getSkuInfoBySkuId(Long skuId) {
-		return skuStockMapper.selectById(skuId);
-	}
-
 	private void deleteProductToEs(Long id) {
 		Delete build = new Delete.Builder(id.toString()).index(EsConstant.PRODUCT_ES_INDEX).type(EsConstant.PRODUCT_INFO_ES_TYPE).build();
 		try {
-			DocumentResult execute = jestClient.execute(build);
+			DocumentResult execute =  jestClient.execute(build);
 			boolean succeeded = execute.isSucceeded();
 			if (succeeded) {
-				log.info("es库中：id为{}的商品信息下架成功", id);
-			} else {
-				log.error("es库中：id为{}的商品信息下架失败", id);
+				log.info("es库中：id为{}的商品信息下架成功",id);
+			}else {
+				log.error("es库中：id为{}的商品信息下架失败",id);
 				//deleteProductToEs(id);//遗留隐患
 			}
 		} catch (IOException e) {
-			log.error("es下架商品信息:id为{}数据异常:{}", id, e.getMessage());
+			log.error("es下架商品信息:id为{}数据异常:{}",id,e.getMessage());
 		}
 	}
 
@@ -251,7 +234,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 		//2.保存es库的商品信息，也要存入sku信息
 		//2.1 复制商品的基本信息
 		EsProduct esProduct = new EsProduct();
-		BeanUtils.copyProperties(productInfo, esProduct);
+		BeanUtils.copyProperties(productInfo,esProduct);
 
 		//2.1 复制商品的sku属性信息
 		QueryWrapper<SkuStock> queryWrapper = new QueryWrapper<SkuStock>().eq("product_id", id);
@@ -260,20 +243,20 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 		List<EsSkuProductInfo> esSkuProductInfos = new ArrayList<>(skuStockList.size());
 		//查询当前商品的sku属性信息名称,sku销售属性值是变化的，需要用es的统计信息
 		List<ProductAttribute> esProductSkuAttributeNames = productAttributeValueMapper.selectProductSaleAttributeName(id);
-		skuStockList.forEach((skuStock) -> {
+		skuStockList.forEach((skuStock)->{
 			EsSkuProductInfo esSkuProductInfo = new EsSkuProductInfo();
-			BeanUtils.copyProperties(skuStock, esSkuProductInfo);
+			BeanUtils.copyProperties(skuStock,esSkuProductInfo);
 
 			//填充商品sku特色标题(商品名称+商品sku销售属性1，2，3)
 			String subSkuTitle = esProduct.getName();
 			if (!StringUtils.isEmpty(skuStock.getSp1())) {
-				subSkuTitle += " " + skuStock.getSp1();
+				subSkuTitle+=" "+skuStock.getSp1();
 			}
 			if (!StringUtils.isEmpty(skuStock.getSp2())) {
-				subSkuTitle += " " + skuStock.getSp2();
+				subSkuTitle+=" "+skuStock.getSp2();
 			}
 			if (!StringUtils.isEmpty(skuStock.getSp3())) {
-				subSkuTitle += " " + skuStock.getSp3();
+				subSkuTitle+=" "+skuStock.getSp3();
 			}
 			esSkuProductInfo.setSkuTitle(subSkuTitle);
 
@@ -314,13 +297,13 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 			DocumentResult execute = jestClient.execute(build);
 			boolean succeeded = execute.isSucceeded();
 			if (succeeded) {
-				log.info("es库中：id为{}商品信息上架成功", id);
-			} else {
-				log.error("es库中：id为{}商品信息上架失败,商品信息尝试重新上架中", id);
+				log.info("es库中：id为{}商品信息上架成功",id);
+			}else{
+				log.error("es库中：id为{}商品信息上架失败,商品信息尝试重新上架中",id);
 				//saveProductToEs(id);//留有隐患
 			}
 		} catch (IOException e) {
-			log.error("es保存商品信息:id为{}数据异常:{}", id, e.getMessage());
+			log.error("es保存商品信息:id为{}数据异常:{}",id,e.getMessage());
 		}
 
 	}
@@ -340,48 +323,48 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 		//保存商品的sku表
 		List<SkuStock> skuStockList = productParam.getSkuStockList();
 		for (int i = 1; i <= skuStockList.size(); i++) {
-			SkuStock skuStock = skuStockList.get(i - 1);
+			SkuStock skuStock = skuStockList.get(i-1);
 			if (StringUtils.isEmpty(skuStock.getSkuCode())) {
 				//skuCode的规则  skuId+productId+
-				skuStock.setSkuCode(threadLocal.get() + "_" + i);
+				skuStock.setSkuCode(threadLocal.get() +"_"+ i);
 			}
 			skuStock.setProductId(threadLocal.get());
 			skuStockMapper.insert(skuStock);
 		}
-		log.debug("当前线程·····{}····{}", Thread.currentThread().getId(), Thread.currentThread().getName());
+		log.debug("当前线程·····{}····{}",Thread.currentThread().getId(),Thread.currentThread().getName());
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void saveProductLadder(PmsProductParam productParam) {
 		//保存商品的阶梯价格
 		List<ProductLadder> productLadderList = productParam.getProductLadderList();
-		productLadderList.forEach((productLadder) -> {
+		productLadderList.forEach((productLadder)->{
 			productLadder.setProductId(threadLocal.get());
 			productLadderMapper.insert(productLadder);
 		});
-		log.debug("当前线程·····{}····{}", Thread.currentThread().getId(), Thread.currentThread().getName());
+		log.debug("当前线程·····{}····{}",Thread.currentThread().getId(),Thread.currentThread().getName());
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void saveProductFullReduction(PmsProductParam productParam) {
 		//保存商品的满减信息
 		List<ProductFullReduction> productFullReductionList = productParam.getProductFullReductionList();
-		productFullReductionList.forEach((productFullReduction) -> {
+		productFullReductionList.forEach((productFullReduction)->{
 			productFullReduction.setProductId(threadLocal.get());
 			productFullReductionMapper.insert(productFullReduction);
 		});
-		log.debug("当前线程·····{}····{}", Thread.currentThread().getId(), Thread.currentThread().getName());
+		log.debug("当前线程·····{}····{}",Thread.currentThread().getId(),Thread.currentThread().getName());
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void saveProductAttributeValue(PmsProductParam productParam) {
 		//保存商品属性列表值
 		List<ProductAttributeValue> productAttributeValueList = productParam.getProductAttributeValueList();
-		productAttributeValueList.forEach((productAttributeValue) -> {
+		productAttributeValueList.forEach((productAttributeValue)->{
 			productAttributeValue.setProductId(threadLocal.get());
 			productAttributeValueMapper.insert(productAttributeValue);
 		});
-		log.debug("当前线程·····{}····{}", Thread.currentThread().getId(), Thread.currentThread().getName());
+		log.debug("当前线程·····{}····{}",Thread.currentThread().getId(),Thread.currentThread().getName());
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -389,9 +372,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 	public void saveBaseProductInfo(PmsProductParam productParam) {
 		//保存商品的基本信息
 		Product product = new Product();
-		BeanUtils.copyProperties(productParam, product);
+		BeanUtils.copyProperties(productParam,product);
 		productMapper.insert(product);
 		threadLocal.set(product.getId());
-		log.debug("当前线程·····{}····{}", Thread.currentThread().getId(), Thread.currentThread().getName());
+		log.debug("当前线程·····{}····{}",Thread.currentThread().getId(),Thread.currentThread().getName());
 	}
 }
