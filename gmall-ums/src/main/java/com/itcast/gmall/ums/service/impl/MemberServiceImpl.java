@@ -3,17 +3,12 @@ package com.itcast.gmall.ums.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itcast.gmall.ums.entity.Member;
-import com.itcast.gmall.ums.entity.MemberReceiveAddress;
 import com.itcast.gmall.ums.mapper.MemberMapper;
-import com.itcast.gmall.ums.mapper.MemberReceiveAddressMapper;
 import com.itcast.gmall.ums.service.MemberService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
-
-import java.util.List;
 
 /**
  * <p>
@@ -30,9 +25,6 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 	@Autowired
 	private MemberMapper memberMapper;
 
-	@Autowired
-	private MemberReceiveAddressMapper memberReceiveAddressMapper;
-
 	/**
 	 * 登录验证，并实现多端口单点登录
 	 * @param username
@@ -45,26 +37,5 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 		QueryWrapper<Member> queryWrapper = new QueryWrapper<Member>().eq("username", username).eq("password", md5Password);
 		Member member = memberMapper.selectOne(queryWrapper);
 		return member;
-	}
-
-	/**
-	 * 根据AccessToken获取member信息
-	 * @param accessToken
-	 * @return
-	 */
-	@Override
-	public Member getMemberByAccessToken(String accessToken) {
-		return null;
-	}
-
-	/**
-	 * 根据用户id获取用户地址信息
-	 * @param id
-	 * @return
-	 */
-	@Override
-	public List<MemberReceiveAddress> getMemberAddress(Long id) {
-		QueryWrapper<MemberReceiveAddress> queryWrapper = new QueryWrapper<MemberReceiveAddress>().eq("member_id", id);
-		return memberReceiveAddressMapper.selectList(queryWrapper);
 	}
 }

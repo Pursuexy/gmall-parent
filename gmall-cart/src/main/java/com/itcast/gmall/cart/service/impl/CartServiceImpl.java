@@ -251,16 +251,6 @@ public class CartServiceImpl implements CartService {
 	}
 
 	/**
-	 * 根据用户id查询订单中的购物项列表
-	 * @param accessToken
-	 * @return
-	 */
-	@Override
-	public List<CartItem> getCartItemsForOrder(String accessToken) {
-		return null;
-	}
-
-	/**
 	 * 修改购物车状态
 	 * @param cartMap
 	 * @param checked
